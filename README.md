@@ -11,6 +11,7 @@ Adds support for idempotency to an Express.js API using Redis. Idempotency guara
 
 1. Node.js version >= 16
 2. (Optional) Access to a remote (MongoDB Atlas) MongoDB database. Point to the desired database by updating the MONGODB_URL in your env file. Pointing to a local MongoDB server is also fine.
+3. Redis should be installed. You can refer official installation documentation [here](https://redis.io/docs/getting-started/installation/).
 
 ## Installation
 

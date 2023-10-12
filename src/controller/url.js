@@ -5,7 +5,7 @@ module.exports = ({ service }) => {
     let lock;
     try {
       // Try to acquire the lock
-      lock = await service.urlService.acquireLock('URL:CREATE');
+      lock = await service.urlService.acquireLock('URL:CREATE:ExclusiveLock', 100);
 
       const { longURL } = req.body;
   
@@ -38,8 +38,13 @@ module.exports = ({ service }) => {
         error: err,
       });
     } finally {
-      // Manually release the lock when the operation is complete
-      if (lock) await lock.release();
+      /**
+       * Manually release the lock when the operation is complete
+       * 
+       * Redlock release is not a no-op, it throws error if you try to release an already expired lock
+       * Ignore the errors from release method
+       */
+      if (lock) await lock.release().catch(() => {});
     }
   }
   
