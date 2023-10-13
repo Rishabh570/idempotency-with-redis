@@ -41,9 +41,9 @@ module.exports = ({ service }) => {
       /**
        * Manually release the lock when the operation is complete
        * 
-       * Redlock release is not a no-op, it throws error if you try to release an already expired lock
-       * Ignore the errors from release method
-       */
+       * NOTE: Redlock's release method is not a no-op, it throws error if you try to release an already expired lock ([more here](https://github.com/mike-marcacci/node-redlock/issues/168#issuecomment-1165700540)). Setting a small TTL usually triggers this unexpected behaviour.
+       * As a workaround, we're ignoring the errors from lock.release()
+      */
       if (lock) await lock.release().catch(() => {});
     }
   }
